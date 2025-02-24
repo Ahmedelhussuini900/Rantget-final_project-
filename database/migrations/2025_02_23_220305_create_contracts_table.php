@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained()->onDelete('cascade');
-            $table->foreignId('landlord_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('tenant_id')->constrained('users')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('total_amount', 10, 2);
-            $table->enum('status', ['active', 'Expired','Under Review','Cancelled '])->default('Under Review');
             $table->timestamps();
         });
     }
