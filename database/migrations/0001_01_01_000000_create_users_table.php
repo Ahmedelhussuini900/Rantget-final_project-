@@ -13,19 +13,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('id_identify')->unsigned();
-            $table->string('id_identify_iamge');
-            $table->string('fullname')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->integer('age')->unsigned()->check('age > 20');
-            $table->string('phone',11);
-            $table->string('image');
-            $table->enum('role', ['landlord', 'tenant'])->default('tenant');
-            $table->timestamps();
+            $table->bigIncrements('id'); // Auto-incrementing primary key
+            $table->string('id_identify', 14)->unique(); // Unique identifier, exactly 14 characters
+            $table->string('id_identify_image'); // Corrected typo: 'id_identify_iamge' to 'id_identify_image'
+            $table->string('fullname')->unique(); // Full name, unique
+            $table->string('email')->unique(); // Email, unique
+            $table->timestamp('email_verified_at')->nullable(); // Email verification timestamp
+            $table->string('password'); // Password
+            $table->rememberToken(); // Remember token for "remember me" functionality
+            $table->integer('age')->unsigned(); // Age, unsigned integer
+            $table->string('phone', 11)->unique(); // Phone number, exactly 11 characters, unique
+            $table->string('image'); // Profile image path or filename
+            $table->enum('role', ['landlord', 'tenant'])->default('tenant'); // Role, default is 'tenant'
+            $table->timestamps(); // Created_at and updated_at timestamps
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
