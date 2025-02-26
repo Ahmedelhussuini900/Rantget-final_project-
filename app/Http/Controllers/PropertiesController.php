@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\properties;
+use App\Models\Property;
 use Illuminate\Http\Request;
 
 class PropertiesController extends Controller
@@ -34,7 +34,7 @@ class PropertiesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(properties $properties)
+    public function show(Property $properties)
     {
         //
     }
@@ -42,7 +42,7 @@ class PropertiesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(properties $properties)
+    public function edit(Property $properties)
     {
         //
     }
@@ -50,7 +50,7 @@ class PropertiesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, properties $properties)
+    public function update(Request $request, Property $properties)
     {
         //
     }
@@ -58,7 +58,7 @@ class PropertiesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(properties $properties)
+    public function destroy(Property $properties)
     {
         //
     }

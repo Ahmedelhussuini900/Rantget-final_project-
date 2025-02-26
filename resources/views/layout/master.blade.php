@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     @include('layout.head')
+    
     <link rel="stylesheet" href="{{ asset('build/assets/css/style.css') }}">
 </head>
 
