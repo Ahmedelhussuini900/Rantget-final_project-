@@ -75,6 +75,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
+        return view('users.show', ['user' => User::findOrFail($id)]);
     }
 
     /**
@@ -83,6 +84,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         //
+        return view('users.edit', ['user' => User::findOrFail($id)]);
     }
 
     /**
@@ -99,5 +101,6 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+        
     }
 }
