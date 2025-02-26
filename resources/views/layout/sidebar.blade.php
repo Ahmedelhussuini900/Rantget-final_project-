@@ -19,6 +19,5 @@
                 <li><a href="#">🚪 Logout</a></li>
                 @endauth
         </div>
-        
     </ul>
 </div>

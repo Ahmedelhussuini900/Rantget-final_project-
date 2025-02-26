@@ -8,7 +8,6 @@
 <body>
 
         @include('layout.header')
-    
 
     <div class="d-flex">
         @include('layout.sidebar')
