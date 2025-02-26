@@ -1,11 +1,13 @@
 @extends('layout.master')
 
+@section('title', 'Users List')
+
 @section('content')
 
     <div class="container mt-5">
         <h1>All Users</h1>
 
-      
+
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

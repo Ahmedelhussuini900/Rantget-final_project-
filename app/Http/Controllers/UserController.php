@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserController extends Controller
@@ -81,26 +82,76 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
-        return view('users.edit', ['user' => User::findOrFail($id)]);
+        return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        // Validate the request
+        $validatedData = $request->validate([
+            'id_identify' => 'required|string|size:14|unique:users,id_identify,' . $user->id,
+            'id_identify_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'fullname' => 'required|string|max:255|unique:users,fullname,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8',
+            'age' => 'required|integer|min:18',
+            'phone' => 'required|string|size:11|unique:users,phone,' . $user->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'role' => 'required|in:landlord,tenant',
+        ]);
+
+        // Handle file uploads
+        if ($request->hasFile('id_identify_image')) {
+            // Delete the old image if it exists
+            if ($user->id_identify_image) {
+                Storage::disk('public')->delete($user->id_identify_image);
+            }
+            $validatedData['id_identify_image'] = $request->file('id_identify_image')->store('id_identify_images', 'public');
+        }
+
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+            $validatedData['image'] = $request->file('image')->store('user_images', 'public');
+        }
+
+        // Hash the password if provided
+        if ($request->filled('password')) {
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
+        }
+
+        // Update the user
+        $user->update($validatedData);
+
+        return to_route('users.index')->with('success', 'User updated successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
-        
+        // Delete associated files
+        if ($user->id_identify_image) {
+            Storage::disk('public')->delete($user->id_identify_image);
+        }
+        if ($user->image) {
+            Storage::disk('public')->delete($user->image);
+        }
+
+        // Delete the user
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
     }
 }

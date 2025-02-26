@@ -1,5 +1,7 @@
 @extends('layout.master')
 
+@section('title', 'Create User')
+
 @section('content')
     <div class="container mt-5">
         <h1>Create User</h1>

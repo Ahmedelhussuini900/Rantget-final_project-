@@ -2,14 +2,9 @@
 <html lang="en">
 <head>
     @include('layout.head')
-    
-    <link rel="stylesheet" href="{{ asset('build/assets/css/style.css') }}">
 </head>
-
 <body>
-
-        @include('layout.header')
-
+    @include('layout.header')
 
     <div class="d-flex">
         @include('layout.sidebar')
@@ -20,8 +15,7 @@
     </div>
 
     @include('layout.footer')
-
+    
     @include('layout.scripts')
-
 </body>
 </html>

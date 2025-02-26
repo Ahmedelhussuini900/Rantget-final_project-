@@ -1,3 +1,3 @@
-<div class="text-center bg-dark text-white" style="padding: 0px 0;">
-    <h2 class="custom-title">Rentgent </h2>
-</div>
+<header class="bg-dark text-white text-center py-3">
+    <h1 class="custom-title">Rentget</h1>
+</header>
