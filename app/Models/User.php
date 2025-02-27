@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\Property; // ✅ Correct import
+use App\Models\Property;
 
 class User extends Authenticatable
 {
@@ -19,7 +19,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = ['id_identify','id_identify_image','fullname', 'email', 'password','age','phone','image','role'];
+    protected $fillable = [
+        'id_identify',
+        'fullname',
+        'email',
+        'password',
+        'age',
+        'phone',
+        'image',
+        'role',
+        'id_identify_image'
+    ];
 
     /**
      * The attributes that should be hidden for serialization.

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('id_identify', 14)->unique();
-            $table->string('id_identify_image');
+            $table->text('id_identify_image');
             $table->string('fullname')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -24,11 +24,13 @@ return new class extends Migration
             $table->rememberToken();
             $table->integer('age')->unsigned();
             $table->string('phone', 11)->unique();
-            $table->string('image');
+            $table->text('image');
             $table->enum('role', ['landlord', 'tenant'])->default('tenant');
             $table->timestamps();
 
         });
+
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
