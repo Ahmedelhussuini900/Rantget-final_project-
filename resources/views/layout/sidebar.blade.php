@@ -12,11 +12,11 @@
         <li><a href="#">📝 About</a></li>
         <div style="padding-top: 100px; ;">
                 @guest
-                <li><a href="#">👤 Login</a></li>
-                <li><a href="#">👤 Register</a></li>
+                <li><a href="/login">👤 Login</a></li>
+                <li><a href="/users/create">👤 Register</a></li>
                 @endguest
                 @auth
-                <li><a href="#">🚪 Logout</a></li>
+                <li><a href="/logout">🚪 Logout</a></li>
                 @endauth
         </div>
     </ul>

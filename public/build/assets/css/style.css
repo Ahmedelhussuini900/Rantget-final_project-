@@ -1,0 +1,56 @@
+.main-content {
+    min-height: 100vh;
+}
+
+body{
+    background: url('https://cdn.pixabay.com/photo/2019/10/27/18/48/skyline-4582510_1280.jpg') no-repeat center center; 
+    background-size: cover;
+}
+.custom-title {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 50px;
+    font-style: italic;
+    color: #fff;
+    margin: 0;
+    
+}
+
+/* Sidebar Container */
+.sidebar {
+    width: 260px;
+    height: 92vh;
+    padding: 15px;
+    color: white;
+   
+}
+
+/* Sidebar Title */
+.sidebar-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    padding: 10px 0;
+}
+
+.sidebar-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar-menu li a:hover {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    padding: 5px;
+}

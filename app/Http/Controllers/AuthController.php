@@ -11,28 +11,28 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function signup(){
-        return view('auth.signup');
-    }
+    // public function signup(){
+    //     return view('auth.signup');
+    // }
 
-    public function register(Request $request){
+    // public function register(Request $request){
 
-        $data=$request->validate([
-            'name'=>'required|string',
-            'email'=>'required|email|unique:users,email',
-            'password'=>'required|min:6'   
-        ]);
+    //     $data=$request->validate([
+    //         'name'=>'required|string',
+    //         'email'=>'required|email|unique:users,email',
+    //         'password'=>'required|min:6'   
+    //     ]);
 
-        $user=User::create([
-            'name'=>$data['name'],
-            'email'=>$data['email'],
-            'password'=>Hash::make($data['password'])
-        ]);
+    //     $user=User::create([
+    //         'name'=>$data['name'],
+    //         'email'=>$data['email'],
+    //         'password'=>Hash::make($data['password'])
+    //     ]);
 
-        Auth::login($user);
+    //     Auth::login($user);
 
-        return view('welcome');
-    }
+    //     return view('welcome');
+    // }
 
 
     public function signin(){
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
     public function logout(){
         Auth::logout();
-        return redirect()->route('auth.signin');
+        return view('auth.signin');
     }
     
 
