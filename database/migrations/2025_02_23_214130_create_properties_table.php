@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->string('image');
             $table->string('location');
             $table->decimal('price');
-            $table->enum('status', ['unavailable', 'reserved','availble','rent']);
+            $table->enum('status', ['unavailable', 'reserved', 'available', 'rent']);
             $table->timestamps();
         });
     }

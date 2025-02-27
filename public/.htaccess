@@ -1,11 +1,22 @@
-<IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
 
+<IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Handle Authorization Header
+    # Allow access to storage images
+    RewriteCond %{REQUEST_URI} ^/storage/.*$
+    RewriteCond %{DOCUMENT_ROOT}/storage/$1 -f
+    RewriteRule ^storage/(.*)$ storage/$1 [L]
+
+    # The rest of your rules...
+</IfModule>
+
+
+<IfModule>
+
+   # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
