@@ -60,7 +60,7 @@ class PropertiesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Property $property)
+    public function show(properties $properties)
     {
     return view('properties.show', compact('property'));
     }
@@ -69,7 +69,7 @@ class PropertiesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Property $property)
+    public function edit(properties $properties)
     {
         //
         return view('properties.edit', compact('property'));
@@ -78,36 +78,15 @@ class PropertiesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Property $property)
+    public function update(Request $request, properties $properties)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'location' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'status' => 'required|in:unavailable,reserved,available,rent',
-        ]);
-
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($property->image) {
-                Storage::disk('public')->delete($property->image);
-            }
-            // Store new image
-            $validatedData['image'] = $request->file('image')->store('properties_images', 'public');
-        }
-
-        $property->update($validatedData);
-
-        return redirect()->route('properties.index')->with('success', 'Property updated successfully.');
+        //
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Property $property)
+    public function destroy(properties $properties)
     {
         // Delete the image if it exists
         if ($property->image) {

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PropertiesController;
-
+use App\Http\Controllers\ContractsController;
 
 
 Route::get('/', function () {
@@ -15,8 +15,8 @@ Route::get('/master', function () {
 });
 
 
-
 Route::resource('users', UserController::class);
-
 Route::resource('properties', PropertiesController::class);
+Route::resource('contracts', ContractsController::class);
+
 
