@@ -65,23 +65,29 @@ class AuthController extends Controller
             'phone.digits' => 'The phone number must be exactly 11 digits.',
             'id_identify.digits' => 'The ID number must be exactly 14 digits.',
         ]);
-
+    
         // Handle file uploads
         $validatedData['id_identify_image'] = $request->file('id_identify_image')->store('id_identify_images', 'public');
         $validatedData['image'] = $request->file('image')->store('user_images', 'public');
         $validatedData['password'] = Hash::make($request->password); // Hash password
-
+    
         // Create user
         $user = User::create($validatedData);
-
+    
         // Automatically log in after registration
         Auth::login($user);
-
-        // Redirect to the appropriate dashboard
-        return redirect()->route($user->role === 'landlord' ? 'dashboard.landlord' : 'dashboard.renter');
+    
+        // Check if the user is admin
+        if ($user->email === 'admin@gmail.com' && Hash::check('admin123', $user->password)) {
+            return redirect()->route('admin.dashboard');
+        }
+    
+        // Redirect based on user role
+        return redirect()->route($user->role === 'landlord' ? 'dashboard.landlord' : 'dashboard.tenant');
     }
+    
 
-    // Handle Logout
+    // Handle Logoutac
     public function logout(Request $request)
 {
     Auth::logout();

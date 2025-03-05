@@ -9,6 +9,8 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandlordController;
 use App\Http\Controllers\RenterController;
+use App\Http\Controllers\AdminController; // ✅ إضافة كنترولر الأدمن
+use App\Http\Middleware\AdminMiddleware;
 
 // 🔹 Redirect to Login Page
 Route::get('/', function () {
@@ -30,13 +32,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('properties', PropertiesController::class);
     Route::resource('contracts', ContractsController::class);
 
-
-    //  Landlord Routes
-    // Route::middleware(['landlord'])->group(function () {
-
-    //     Route::resource('payments', PaymentsController::class);
-    // });
-
     // 🔹 Landlord and Renter Dashboards
     Route::get('/dashboard/landlord', [LandlordController::class, 'index'])->name('dashboard.landlord');
     Route::get('/dashboard/renter', [RenterController::class, 'index'])->name('dashboard.renter');
@@ -49,3 +44,16 @@ Route::get('/login', [AuthController::class, 'showAuthForm'])->name('login');
 Route::get('/master', function () {
     return view('layout.master');
 });
+
+// ✅ مسارات الأدمن - تتطلب `admin` Middleware
+
+Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::post('/users/{id}/update-role', [AdminController::class, 'updateRole'])->name('updateRole');
+    Route::delete('/users/{id}/delete', [AdminController::class, 'deleteUser'])->name('deleteUser');
+});
+Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+
+Route::get('/auth', [AuthController::class, 'showAuthForm'])->name('auth');
+

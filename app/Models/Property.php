@@ -37,5 +37,9 @@ class Property extends Model
     {
         return $this->hasMany(Contract::class);
     }
+    // public function properties()    
+    // {
+    //     return $this->hasMany(Property::class);
+    // }
 
 }

@@ -63,10 +63,21 @@
             <input type="number" name="insurance_amount" id="insurance_amount" class="form-control" required step="0.01">
         </div>
 
-        <div class="mb-3">
-            <label for="penalty_amount" class="form-label fw-bold">Penalty Amount</label>
-            <input type="number" name="penalty_amount" id="penalty_amount" class="form-control" required step="0.01">
-        </div>
+        <div class="form-group">
+    <label>Punish</label>
+    <div class="d-flex">
+        @if(auth()->user()->isSuperAdmin())
+            <input type="radio" id="punish_yes" name="punish" value="yes" class="btn-check">
+            <label for="punish_yes" class="btn btn-success">Yes</label>
+        @else
+            <label class="btn btn-secondary disabled">Yes (Admin Only)</label>
+        @endif
+
+        <input type="radio" id="punish_no" name="punish" value="no" class="btn-check" checked>
+        <label for="punish_no" class="btn btn-danger">No</label>
+    </div>
+</div>
+
 
         <div class="mb-3">
             <label for="contract_image" class="form-label fw-bold">Contract Image</label>

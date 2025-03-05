@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,8 +57,14 @@ class PropertiesController extends Controller
         $property = Property::create($validatedData);
 
         // ✅ إرفاق العقار بالمستخدم في الجدول الوسيط
-        Auth::user()->properties()->syncWithoutDetaching([$property->id]);
+// ✅ تأكد من استخدام () عند استدعاء العلاقة
 
+if (Auth::check()) {
+    Auth::User()->properties()->syncWithoutDetaching([$property->id]);
+} else {
+    return redirect()->route('login')->with('error', 'يجب تسجيل الدخول أولاً!');
+}
+  
         return redirect()->route('dashboard.landlord')->with('success', 'Property created successfully.');
     }
 

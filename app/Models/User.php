@@ -20,7 +20,8 @@ class User extends Authenticatable
         'phone',
         'image',
         'role',
-        'id_identify_image'
+        'id_identify_image',
+        'is_admin' // ✅ تأكدي أنه موجود في قاعدة البيانات
     ];
 
     protected $hidden = [
@@ -28,18 +29,30 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'is_admin' => 'boolean', // ✅ تأكدي أن is_admin يتم التعامل معه كبوليان
+    ];
+
+    /**
+     * التحقق مما إذا كان المستخدم هو الـ Super Admin
+     */
+    public function isSuperAdmin()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->is_admin && $this->email === 'admin@gmail.com';
     }
 
     /**
-     * Define Many-to-Many Relationship with Property Model
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * التحقق مما إذا كان المستخدم Admin
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin; // ✅ سيعمل الآن بدون مشاكل
+    }
+
+    /**
+     * علاقة Many-to-Many مع Property
      */
     public function properties(): BelongsToMany
     {

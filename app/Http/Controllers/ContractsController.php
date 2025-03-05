@@ -6,6 +6,7 @@ use App\Models\Contract;
 use App\Models\User;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContractsController extends Controller
 {
@@ -26,32 +27,46 @@ class ContractsController extends Controller
 
     public function store(Request $request)
     {
-        // إضافة التحقق من صحة الحقول
-        $request->validate([
-            'property_id' => 'required|exists:properties,id',
-            'landlord_id' => 'required|exists:users,id',
-            'tenant_id' => 'required|exists:users,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'total_amount' => 'required|numeric|min:0',
-            'insurance_amount' => 'required|numeric',
-            'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'penalty_amount' => 'nullable|numeric|min:0', // تعديل هنا لجعل الحقل قابل للتخزين كـ NULL
-        ]);
+         // التحقق مما إذا كان المستخدم مسموحًا له بإضافة عقد
+    if (!auth()->user()->isAdmin() && !auth()->user()->isSuperAdmin()) {
+        return redirect()->route('contracts.index')->with('error', 'Unauthorized action.');
+    }
 
-        // تخزين الصورة في حالة رفع صورة جديدة
-        $contractImagePath = null;
-        if ($request->hasFile('contract_image')) {
-            $contractImagePath = $request->file('contract_image')->store('contract_image', 'public');
-        }
+    // إضافة التحقق من صحة الحقول
+    $request->validate([
+        'property_id' => 'required|exists:properties,id',
+        'landlord_id' => 'required|exists:users,id',
+        'tenant_id' => 'required|exists:users,id',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date|after:start_date',
+        'total_amount' => 'required|numeric|min:0',
+        'insurance_amount' => 'required|numeric',
+        'contract_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'penalty_amount' => [
+            'nullable', 
+            'numeric', 
+            'min:0',
+            function ($attribute, $value, $fail) {
+                if (!auth()->user()->isSuperAdmin() && $value !== null) {
+                    $fail('Only the Super Admin can assign a penalty amount.');
+                }
+            }
+        ],
+    ]);
 
-        // جمع جميع البيانات
-        $validatedData = $request->all();
-        $validatedData['contract_image'] = $contractImagePath; // تعيين الصورة المحفوظة
+    // تخزين الصورة في حالة رفع صورة جديدة
+    $contractImagePath = null;
+    if ($request->hasFile('contract_image')) {
+        $contractImagePath = $request->file('contract_image')->store('contract_image', 'public');
+    }
 
-        Contract::create($validatedData);
+    // جمع جميع البيانات
+    $validatedData = $request->all();
+    $validatedData['contract_image'] = $contractImagePath; // تعيين الصورة المحفوظة
 
-        return redirect()->route('contracts.index')->with('success', 'Contract created successfully.');
+    Contract::create($validatedData);
+
+    return redirect()->route('contracts.index')->with('success', 'Contract created successfully.');
     }
 
     public function show(Contract $contract)
