@@ -35,7 +35,7 @@
                         <td>{{ $property->description }}</td>
                         <td>
                             @if($property->image)
-                                <img src="{{ asset('storage/' . $property->image) }}"
+                            <img src="{{ asset('storage/' . $property->image) }}" alt="Property Image"
                                      alt="Property Image"
                                      class="img-fluid rounded"
                                      style="max-width: 150px; height: 100px; object-fit: cover;">

@@ -23,18 +23,18 @@ class Contract extends Model
     ];
 
     public function property()
-{
-    return $this->belongsTo(Property::class, 'property_id');
-}
+    {
+        return $this->belongsTo(Property::class, 'property_id');
+    }
 
     public function landlord()
 {
-    return $this->belongsTo(User::class, 'landlord_id');
+    return $this->belongsTomany(User::class, 'landlord_id');
 }
 
 
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
-    }
+public function tenant()
+{
+    return $this->belongsTo(User::class, 'tenant_id');
+}
 }

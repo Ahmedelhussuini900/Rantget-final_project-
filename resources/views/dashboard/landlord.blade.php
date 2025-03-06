@@ -10,7 +10,7 @@
         <h2 class="text-center my-4">Your Properties</h2>
 
         @if($properties->isEmpty())
-            <p class="text-center">No properties found.</p> 
+            <p class="text-center">No properties found.</p>
         @else
             <div class="slider-container">
                 <div class="slider">

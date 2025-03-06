@@ -27,13 +27,15 @@ class AuthController extends Controller
             $request->session()->regenerate(); // Prevent session fixation attacks
 
             $user = Auth::user(); // Get logged-in user
+            // dd(Auth::user());
 
             // Redirect based on role
             if ($user->role === 'landlord') {
-                return redirect()->route('dashboard.landlord');
+                return redirect()->route('landlord.dashboard');
             } elseif ($user->role === 'tenant') {
-                return redirect()->route('dashboard.renter');
+                return redirect()->route('renter.dashboard');
             }
+
 
             return redirect()->route('dashboard');
         }
@@ -65,27 +67,29 @@ class AuthController extends Controller
             'phone.digits' => 'The phone number must be exactly 11 digits.',
             'id_identify.digits' => 'The ID number must be exactly 14 digits.',
         ]);
-    
-        // Handle file uploads
+
+        // رفع الصور
         $validatedData['id_identify_image'] = $request->file('id_identify_image')->store('id_identify_images', 'public');
         $validatedData['image'] = $request->file('image')->store('user_images', 'public');
-        $validatedData['password'] = Hash::make($request->password); // Hash password
-    
-        // Create user
+        $validatedData['password'] = Hash::make($request->password); // تشفير كلمة المرور
+
+        // **✅ Only Create the User Once**
+        $validatedData['is_admin'] = ($request->email === 'admin@gmail.com');
         $user = User::create($validatedData);
-    
-        // Automatically log in after registration
+
+        // تسجيل الدخول تلقائيًا بعد التسجيل
         Auth::login($user);
-    
-        // Check if the user is admin
-        if ($user->email === 'admin@gmail.com' && Hash::check('admin123', $user->password)) {
+
+        // إعادة التوجيه حسب دور المستخدم
+        if ($user->is_admin) {
             return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'landlord') {
+            return redirect()->route('dashboard.landlord');
+        } else {
+            return redirect()->route('dashboard.renter');
         }
-    
-        // Redirect based on user role
-        return redirect()->route($user->role === 'landlord' ? 'dashboard.landlord' : 'dashboard.tenant');
     }
-    
+
 
     // Handle Logoutac
     public function logout(Request $request)
@@ -99,7 +103,7 @@ class AuthController extends Controller
 
 public function landlordDashboard()
 {
-    $user = Auth::user(); 
+    $user = Auth::user();
     return view('dashboard.landlord', compact('user')); // ✅ Pass user to the view
 }
 

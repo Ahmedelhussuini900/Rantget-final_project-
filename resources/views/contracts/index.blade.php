@@ -11,8 +11,10 @@
     @endif
 
     <div class="mb-3">
-        <a href="{{ route('contracts.create') }}" class="btn btn-primary">Create New Contract</a>
-    </div>
+        <a href="{{ route('contracts.create', ['property_id' => $property->id]) }}" class="btn btn-primary">
+            Create Contract
+        </a>
+            </div>
 
     <table class="table table-bordered table-striped">
         <thead>
@@ -35,8 +37,8 @@
                 <tr>
                     <td>{{ $contract->id }}</td>
                     <td>{{ optional($contract->property)->title ?? 'N/A' }}</td>
-                    <td>{{ $contract->landlord->fullname }}</td>
-                    <td>{{ $contract->tenant->fullname }}</td>
+                    <td>{{ $contract->landlords->fullname }}</td>
+                    <td>{{ $contract->tenants->fullname }}</td>
                     <td>{{ $contract->start_date }}</td>
                     <td>{{ $contract->end_date }}</td>
                     <td>{{ $contract->total_amount }} EGP</td>
@@ -50,7 +52,7 @@
                         </td>
 
                     <td>{{ $contract->penalty_amount }} EGP</td>
-                    
+
                     <td>
                         <a href="{{ route('contracts.show', $contract->id) }}" class="btn btn-info btn-sm">View</a>
                         <a href="{{ route('contracts.edit', $contract->id) }}" class="btn btn-warning btn-sm">Edit</a>

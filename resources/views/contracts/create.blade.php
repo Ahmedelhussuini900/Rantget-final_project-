@@ -15,20 +15,21 @@
         @csrf
 
         <div class="mb-3">
-            <label for="properties_id" class="form-label fw-bold">Property</label>
-            <select name="property_id" id="property_id" class="form-control" required>
+            <label for="property_id" class="form-label fw-bold">Property</label>
+            <select name="property_id" class="form-control">
+                <option value="">-- Select Property --</option>
                 @foreach($properties as $property)
                     <option value="{{ $property->id }}">{{ $property->title }}</option>
                 @endforeach
             </select>
-
         </div>
+
 
         <div class="mb-3">
             <label for="landlord_id" class="form-label fw-bold">Landlord</label>
             <select name="landlord_id" id="landlord_id" class="form-control" required>
                 @foreach($landlords as $landlord)
-                    <option value="{{ $landlord->id }}">{{ $landlord->fullname }}</option>
+                    <option value="{{ $landlord->id }}" selected>{{ $landlord->fullname }}</option>
                 @endforeach
             </select>
 
@@ -37,6 +38,7 @@
         <div class="mb-3">
             <label for="tenant_id" class="form-label fw-bold">Tenant</label>
             <select name="tenant_id" id="tenant_id" class="form-control" required>
+                <option value="">Select Tenant</option>
                 @foreach($tenants as $tenant)
                     <option value="{{ $tenant->id }}">{{ $tenant->fullname }}</option>
                 @endforeach
@@ -64,35 +66,32 @@
         </div>
 
         <div class="form-group">
-    <label>Punish</label>
-    <div class="d-flex">
-        @if(auth()->user()->isSuperAdmin())
-            <input type="radio" id="punish_yes" name="punish" value="yes" class="btn-check">
-            <label for="punish_yes" class="btn btn-success">Yes</label>
-        @else
-            <label class="btn btn-secondary disabled">Yes (Admin Only)</label>
-        @endif
+            <label class="fw-bold">Punish</label>
+            <div class="d-flex">
+                @if(auth()->user()->isSuperAdmin())
+                    <input type="radio" id="punish_yes" name="punish" value="yes" class="btn-check">
+                    <label for="punish_yes" class="btn btn-success">Yes</label>
+                @else
+                    <label class="btn btn-secondary disabled">Yes (Admin Only)</label>
+                @endif
 
-        <input type="radio" id="punish_no" name="punish" value="no" class="btn-check" checked>
-        <label for="punish_no" class="btn btn-danger">No</label>
-    </div>
-</div>
-
+                <input type="radio" id="punish_no" name="punish" value="no" class="btn-check" checked>
+                <label for="punish_no" class="btn btn-danger">No</label>
+            </div>
+        </div>
 
         <div class="mb-3">
             <label for="contract_image" class="form-label fw-bold">Contract Image</label>
-            <input type="file" name="contract_image" id="contract_image" class="form-control" required>
-                @error('contract_image')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-
+            <input type="file" name="contract_image" id="contract_image" class="form-control">
+            @error('contract_image')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="d-flex justify-content-center gap-3 mt-4 mb-3">
-    <a href="{{ route('properties.show', $property->id) }}" class="btn btn-secondary">Back</a>
-    <button type="submit" class="btn btn-primary">Create Contract</button>
-</div>
-
+            <a href="{{ route('contracts.index') }}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-primary">Create Contract</button>
+        </div>
 
     </form>
     </div>

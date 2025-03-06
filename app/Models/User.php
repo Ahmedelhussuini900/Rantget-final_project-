@@ -54,8 +54,44 @@ class User extends Authenticatable
     /**
      * علاقة Many-to-Many مع Property
      */
-    public function properties(): BelongsToMany
+
+    // ✅ العقارات التي يملكها المستخدم (كمالك)
+    public function ownedProperties()
     {
-        return $this->belongsToMany(Property::class, 'property_user')->withTimestamps();
+        return $this->belongsToMany(Property::class, 'property_user', 'landlord_id', 'property_id')->withTimestamps();
     }
+
+
+    // ✅ عدد الشقق التي قام المالك بتأجيرها
+
+    public function properties()
+    {
+        return $this->belongsToMany(Property::class, 'property_user', 'user_id', 'property_id');
+    }
+    // سكوب لجلب المستأجرين بسهولة
+    public function scopeTenants($query)
+    {
+        return $query->where('role', 'tenant');
+    }
+    public function scopeLandlords($query)
+    {
+        return $query->where('role', 'landlord');
+    }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class, 'landlord_id');
+    }
+
+    public function tenantContracts()
+    {
+        return $this->hasMany(Contract::class, 'tenant_id');
+    }
+
 }
+
+
+
+
+
+

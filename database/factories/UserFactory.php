@@ -21,17 +21,39 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    // public function definition()
+    // {
+    //     return [
+    //         'id_identify' => $this->faker->randomNumber(8),
+    //         'fullname' => $this->faker->unique()->name(),
+    //         'email' => $this->faker->unique()->safeEmail(),
+    //         'email_verified_at' => now(),
+    //         'password' => bcrypt('12345678'), // Static password for all users
+    //         'remember_token' => Str::random(10),
+    //         'age' => $this->faker->numberBetween(21, 60),
+    //         'phone' => $this->faker->numerify('01#########'), // 11-digit phone number
+    //         'image' => $this->faker->imageUrl(),
+    //         'id_identify_image' => $this->faker->imageUrl(),
+    //         'role' => $this->faker->randomElement(['landlord', 'tenant']),
+    //     ];
+    // }
+    public function definition()
     {
         return [
-            'fullname' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'id_identify' => $this->faker->randomNumber(8),
+            'fullname' => $this->faker->unique()->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => bcrypt('12345678'), // Static password for all users
             'remember_token' => Str::random(10),
+            'age' => $this->faker->numberBetween(21, 60),
+            'phone' => $this->faker->numerify('01#########'), // 11-digit phone number
+            'image' => asset('user_images/wvzaGjKDPloZuUKsnnKIKCsKIhsDldW4siVHzJLD.jpg'), // Static image
+            'id_identify_image' => asset('id_identify_images/zgD55FZ9NzrDqTb0XS7jj5qbLkW7MOqhUp6n5wHT.jpg'),
+            'role' => $this->faker->randomElement(['landlord', 'tenant']),
         ];
     }
-    
+
 
     /**
      * Indicate that the model's email address should be unverified.

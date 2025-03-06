@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('property_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // ربط المستخدمين
-            $table->foreignId('property_id')->constrained()->onDelete('cascade'); // ربط العقارات
-            // $table->enum('role', ['landlord', 'tenant']); // تحديد هل المستخدم مالك أم مستأجر
-            $table->timestamp('start_date')->nullable(); // تاريخ بداية العقد
-            $table->timestamp('end_date')->nullable(); // تاريخ نهاية العقد
+            $table->foreignId('property_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ✅ استبدل landlord_id بـ user_id
+            $table->enum('role', ['landlord', 'tenant']); // ✅ لمعرفة دور المستخدم في العقار
             $table->timestamps();
-        });;
+        });
+
+
+
     }
 
     /**

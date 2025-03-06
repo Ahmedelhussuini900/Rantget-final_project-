@@ -23,23 +23,46 @@ class Property extends Model
     'location',
     'price',
     'status',
-    
+
 
     ];
-    
-    
-    public function users(): BelongsToMany
+
+
+    // public function users(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(User::class, 'property_user');
+    // }
+
+    public function contracts()
     {
-        return $this->belongsToMany(User::class, 'property_user');
+        return $this->hasMany(Contract::class, 'property_id');
     }
 
-    public function contracts(): HasMany
-    {
-        return $this->hasMany(Contract::class);
-    }
-    // public function properties()    
+    // public function properties()
     // {
     //     return $this->hasMany(Property::class);
     // }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'property_user')->withPivot('role');
+    }
+    public function landlords()
+    {
+        return $this->belongsToMany(User::class, 'property_user', 'property_id', 'user_id')
+            ->where('role', 'landlord'); // تأكد أن المستخدمين ملاك فقط
+    }
+    // public function landlords()
+    // {
+    //     return $this->belongsToMany(User::class, 'property_user', 'property_id', 'user_id');
+    // }
+
+
+    public function tenants()
+    {
+        return $this->belongsToMany(User::class, 'property_user', 'property_id', 'user_id')
+        ->where('role', 'tenant'); // تأكد أن المستخدمين ملاك فقط
+}
+
 
 }
+

@@ -11,9 +11,10 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
-            abort(403, 'Unauthorized Access'); // ❌ منع الوصول إذا لم يكن المستخدم أدمن
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            abort(403, 'Unauthorized Access');
         }
+        
 
         return $next($request);
     }
